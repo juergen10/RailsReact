@@ -1,10 +1,13 @@
 class V1::BooksController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :set_book, only: [:show, :update, :destroy]
 
   def index
     render json: Book.all
   end
-
+  def show
+    render json: @book
+  end
   def new
     @book = Book.new
   end
@@ -19,6 +22,9 @@ class V1::BooksController < ApplicationController
     end
   end
 private
+  def set_book
+    @book = Book.find(params[:id])
+  end
   def book_params
     params.permit(:Title, :ISBN, :AuthorID)
   end
